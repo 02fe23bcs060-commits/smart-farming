@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: smart-farming-db
+    environment:
+      POSTGRES_USER: agri_user
+      POSTGRES_PASSWORD: agri_pass
+      POSTGRES_DB: smart_farming
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agri_user -d smart_farming"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    image: smart-farming-backend:latest
+    container_name: smart-farming-api
+    environment:
+      DATABASE_URL: postgresql://agri_user:agri_pass@db:5432/smart_farming
+      CORS_ORIGINS: http://localhost:3000,http://frontend:3000
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    image: smart-farming-frontend:latest
+    container_name: smart-farming-web
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

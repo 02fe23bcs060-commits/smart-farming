@@ -1,0 +1,8 @@
+[ec2]
+# Replace with your EC2 public IP or hostname
+smart-farming-prod ansible_host=YOUR_EC2_PUBLIC_IP ansible_user=ubuntu
+
+[ec2:vars]
+ansible_ssh_private_key_file=~/.ssh/smart-farming.pem
+app_dir=/opt/smart-farming
+compose_project=smart-farming

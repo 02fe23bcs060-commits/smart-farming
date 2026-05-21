@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f8faf6;
+  --card: #ffffff;
+  --text: #1a2e1a;
+}
+
+body {
+  background: linear-gradient(180deg, #f4faf3 0%, #faf8f0 50%, #f0f5ee 100%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl bg-white/90 shadow-md border border-field-100 p-6;
+  }
+  .btn-primary {
+    @apply rounded-xl bg-field-600 hover:bg-field-700 text-white font-semibold px-6 py-3 transition shadow-md disabled:opacity-50;
+  }
+  .input-field {
+    @apply w-full rounded-xl border border-field-200 bg-field-50/50 px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-field-400;
+  }
+  .label {
+    @apply block text-sm font-semibold text-field-800 mb-1;
+  }
+}
