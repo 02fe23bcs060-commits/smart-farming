@@ -1,4 +1,12 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+// Browser uses same origin (Next.js proxies /api → backend). Avoids localhost/EC2 URL issues.
+function getApiBase(): string {
+  if (typeof window !== "undefined") {
+    return "";
+  }
+  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+}
+
+const API_URL = getApiBase();
 
 export type FarmFormData = {
   farmer_name?: string;
@@ -58,21 +66,42 @@ export type RecommendationResult = {
   future_features: Record<string, string>;
 };
 
+async function parseError(res: Response): Promise<string> {
+  try {
+    const err = await res.json();
+    if (typeof err.detail === "string") return err.detail;
+    if (Array.isArray(err.detail)) return err.detail.map((d: { msg?: string }) => d.msg).join(", ");
+  } catch {
+    /* ignore */
+  }
+  return `Request failed (${res.status})`;
+}
+
 export async function analyzeFarm(data: FarmFormData): Promise<RecommendationResult> {
-  const res = await fetch(`${API_URL}/api/recommendations/analyze`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${API_URL}/api/recommendations/analyze`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+  } catch {
+    throw new Error(
+      "Failed to fetch — API not reachable. On EC2: rebuild frontend (git pull && docker compose build --no-cache frontend && docker compose up -d)."
+    );
+  }
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || "Failed to get recommendations");
+    throw new Error(await parseError(res));
   }
   return res.json();
 }
 
 export async function fetchHistory(farmerId: number) {
-  const res = await fetch(`${API_URL}/api/recommendations/history/${farmerId}`);
-  if (!res.ok) return [];
-  return res.json();
+  try {
+    const res = await fetch(`${API_URL}/api/recommendations/history/${farmerId}`);
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
 }

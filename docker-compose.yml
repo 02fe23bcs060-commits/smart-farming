@@ -21,8 +21,8 @@ services:
     image: smart-farming-backend:latest
     container_name: smart-farming-api
     environment:
-      DATABASE_URL: postgresql://agri_user:agri_pass@db:5432/smart_farming
-      CORS_ORIGINS: http://localhost:3000,http://frontend:3000
+      DATABASE_URL: ${DATABASE_URL:-postgresql://agri_user:agri_pass@db:5432/smart_farming}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://frontend:3000}
     ports:
       - "8000:8000"
     depends_on:
@@ -33,11 +33,9 @@ services:
     build:
       context: ./frontend
       args:
-        NEXT_PUBLIC_API_URL: http://localhost:8000
+        API_INTERNAL_URL: http://backend:8000
     image: smart-farming-frontend:latest
     container_name: smart-farming-web
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8000
     ports:
       - "3000:3000"
     depends_on:
