@@ -19,14 +19,14 @@ pipeline {
         stage('Backend Tests') {
             steps {
                 dir('backend') {
-                    sh '''
-                        python3 -m venv .venv
-                        . .venv/bin/activate
+                    bat '''
+                        python -m venv .venv
+                        call .venv\\Scripts\\activate
 
                         pip install --upgrade pip
                         pip install -r requirements.txt
 
-                        export PYTHONPATH=.
+                        set PYTHONPATH=.
 
                         pytest -q
                     '''
@@ -37,7 +37,7 @@ pipeline {
         stage('Frontend Build') {
             steps {
                 dir('frontend') {
-                    sh '''
+                    bat '''
                         npm install
                         npm run build
                     '''
@@ -59,8 +59,8 @@ pipeline {
                     )
                 ]) {
 
-                    sh '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    bat '''
+                        echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
                     '''
                 }
             }
@@ -72,9 +72,9 @@ pipeline {
             }
 
             steps {
-                sh '''
-                    docker build -t $IMAGE_API:latest ./backend
-                    docker build -t $IMAGE_WEB:latest ./frontend
+                bat '''
+                    docker build -t %IMAGE_API%:latest ./backend
+                    docker build -t %IMAGE_WEB%:latest ./frontend
                 '''
             }
         }
@@ -85,9 +85,9 @@ pipeline {
             }
 
             steps {
-                sh '''
-                    docker push $IMAGE_API:latest
-                    docker push $IMAGE_WEB:latest
+                bat '''
+                    docker push %IMAGE_API%:latest
+                    docker push %IMAGE_WEB%:latest
                 '''
             }
         }
@@ -98,8 +98,8 @@ pipeline {
             }
 
             steps {
-                sh '''
-                    ansible-playbook -i ansible/inventory/production ansible/playbook.yml
+                bat '''
+                    ansible-playbook -i ansible\\inventory\\production ansible\\playbook.yml
                 '''
             }
         }
