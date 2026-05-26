@@ -20,10 +20,12 @@ pipeline {
             steps {
                 dir('backend') {
                     bat '''
-                        python -m venv .venv
+                        py -3.12 -m venv .venv
+
                         call .venv\\Scripts\\activate
 
-                        pip install --upgrade pip
+                        python -m pip install --upgrade pip
+
                         pip install -r requirements.txt
 
                         set PYTHONPATH=.
