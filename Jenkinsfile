@@ -20,7 +20,7 @@ pipeline {
             steps {
                 dir('backend') {
                     bat '''
-                        py -3.12 -m venv .venv
+                        py -3.13 -m venv .venv
 
                         call .venv\\Scripts\\activate
 
@@ -30,7 +30,7 @@ pipeline {
 
                         set PYTHONPATH=.
 
-                        pytest -q
+                        python -m pytest -q
                     '''
                 }
             }
