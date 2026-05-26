@@ -27,11 +27,11 @@ export default function Home() {
     <main className="min-h-screen">
       <header className="bg-field-800 text-white py-8 px-4 shadow-lg">
         <div className="max-w-6xl mx-auto">
-          <p className="text-field-200 text-sm uppercase tracking-wider">Next-gen agriculture</p>
+          <p className="text-field-200 text-sm uppercase tracking-wider">Next-Gen agriculture</p>
           <h1 className="text-3xl md:text-4xl font-display mt-1">AgriSmart Farming Advisor</h1>
           <p className="text-field-100 mt-2 max-w-2xl text-lg">
             Data-driven crop, fertilizer, and water recommendations — reduce guesswork and farm
-            smarter.
+            smarter....
           </p>
         </div>
       </header>
