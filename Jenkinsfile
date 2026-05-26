@@ -16,25 +16,27 @@ pipeline {
             }
         }
 
-        stage('Backend Tests') {
-            steps {
-                dir('backend') {
-                    bat '''
-                        py -3.13 -m venv .venv
+       stage('Backend Tests') {
+    steps {
+        dir('backend') {
+            bat '''
+                "C:\\Users\\Keerti\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m venv .venv
 
-                        call .venv\\Scripts\\activate
+                call .venv\\Scripts\\activate
 
-                        python -m pip install --upgrade pip
+                python -m pip install --upgrade pip
 
-                        pip install -r requirements.txt
+                pip install wheel setuptools
 
-                        set PYTHONPATH=.
+                pip install -r requirements.txt
 
-                        python -m pytest -q
-                    '''
-                }
-            }
+                set PYTHONPATH=.
+
+                python -m pytest -q
+            '''
         }
+    }
+}
 
         stage('Frontend Build') {
             steps {
