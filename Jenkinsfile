@@ -107,6 +107,12 @@ pipeline {
                 '''
             }
         }
+
+        stage('DevOps Update') {
+            steps {
+                echo 'DevOps pipeline updated by Member 4'
+            }
+        }
     }
 
     post {
