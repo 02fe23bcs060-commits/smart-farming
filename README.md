@@ -1,128 +1,74 @@
-# AgriSmart — Smart Farming Web Application
+## Testing
 
-AI-powered agricultural decision support for farmers: crop selection, fertilizer plans, irrigation scheduling, and weather-based alerts. Built for sustainable farming, water conservation, and data-driven productivity.
+### Test Cases
 
-## Features
+#### 1. Crop Recommendation Test
+**Objective:** Verify that the system recommends suitable crops based on soil and weather conditions.
 
-| Feature | Description |
-|---------|-------------|
-| **Farm input form** | Soil type, season, temperature, water availability, land size |
-| **Crop AI engine** | Weighted multi-factor scoring across 15+ crops |
-| **Fertilizer advisor** | NPK ratios, organic options, soil amendments per crop |
-| **Irrigation planner** | Weekly schedule, daily water estimates, conservation tips |
-| **Weather insights** | Rainfall alerts, heat/frost warnings via Open-Meteo |
-| **History DB** | PostgreSQL stores farmers, inputs, and recommendation history |
-| **Roadmap** | Disease detection, market prices, i18n, IoT sensors (extensible API) |
+**Input:**
+- Soil Type: Loamy
+- Temperature: 28°C
+- Humidity: 65%
 
-## Tech stack
+**Expected Result:**
+- Appropriate crop recommendation is displayed.
 
-- **Frontend:** Next.js 15, React 19, Tailwind CSS
-- **Backend:** FastAPI, SQLAlchemy, PostgreSQL
-- **DevOps:** Docker Compose, Jenkins, Ansible, AWS EC2, GitHub
+**Status:** Passed
 
-## Quick start (Docker)
+---
 
-```bash
-cd smart-farming
-cp .env.example .env
-docker compose up --build
-```
+#### 2. Fertilizer Recommendation Test
+**Objective:** Verify that the system suggests the correct fertilizer.
 
-- Web UI: http://localhost:3000
-- API: http://localhost:8000
-- API docs: http://localhost:8000/docs
+**Input:**
+- Crop: Rice
+- Soil Nutrients: Low Nitrogen
 
-## Local development
+**Expected Result:**
+- Suitable fertilizer recommendation is generated.
 
-### Backend
+**Status:** Passed
 
-```bash
-cd backend
-python -m venv .venv
-.venv\Scripts\activate   # Windows
-pip install -r requirements.txt
-# Start PostgreSQL or use docker compose up db -d
-set DATABASE_URL=postgresql://agri_user:agri_pass@localhost:5432/smart_farming
-uvicorn app.main:app --reload
-```
+---
 
-### Frontend
+#### 3. Weather Forecast Test
+**Objective:** Verify weather information retrieval from the API.
 
-```bash
-cd frontend
-npm install
-set NEXT_PUBLIC_API_URL=http://localhost:8000
-npm run dev
-```
+**Input:**
+- Location: Karnataka
 
-### Tests
+**Expected Result:**
+- Current weather and forecast data are displayed.
 
-```bash
-cd backend && pytest -q
-```
+**Status:** Passed
 
-## API examples
+---
 
-```bash
-curl -X POST http://localhost:8000/api/recommendations/analyze \
-  -H "Content-Type: application/json" \
-  -d '{
-    "farmer_name": "Demo Farmer",
-    "soil_type": "loam",
-    "season": "kharif",
-    "temperature_c": 28,
-    "water_availability": "medium",
-    "land_size_acres": 2.5
-  }'
-```
+#### 4. Deployment Test
+**Objective:** Verify successful deployment on AWS EC2.
 
-## Project structure
+**Input:**
+- Application URL
 
-```
-smart-farming/
-├── backend/          # FastAPI + AI engines + PostgreSQL models
-├── frontend/         # Next.js farmer UI
-├── ansible/          # EC2 provisioning and deploy
-├── docs/             # AWS deployment guide
-├── docker-compose.yml
-├── Jenkinsfile
-└── README.md
-```
+**Expected Result:**
+- Application loads successfully and all modules work correctly.
 
-## GitHub collaboration
+**Status:** Passed
 
-1. Create a GitHub organization or repo
-2. Push this project: `git push -u origin main`
-3. Use branch protection and pull requests for team workflow
-4. Connect Jenkins to the repo webhook for CI/CD
+---
 
-## CI/CD (Jenkins)
+## Contributors
 
-The `Jenkinsfile` runs:
+| Member | Role |
+|----------|----------|
+| Member 1 | Release Manager |
+| Member 2 | Frontend Developer |
+| Member 3 | Backend Developer |
+| Member 4 | DevOps Engineer |
+| Member 5 | Testing & Documentation |
 
-1. Backend unit tests (`pytest`)
-2. Frontend production build
-3. Docker image build (on `main`)
-4. Optional registry push
-5. Ansible deploy to EC2
+---
 
-Configure Jenkins credentials: `docker-hub-credentials`, and set `IMAGE_PREFIX` / `GIT_REPO_URL` environment variables.
+## Conclusion
 
-## AWS + Ansible
-
-See [docs/AWS_DEPLOYMENT.md](docs/AWS_DEPLOYMENT.md) for EC2 setup, security groups, and Ansible playbook usage.
-
-## Future enhancements
-
-The `/api/features/roadmap` endpoint documents planned modules:
-
-- Crop disease detection (image ML)
-- Market price prediction
-- Multilingual UI
-- IoT sensor integration (MQTT)
-
-Architecture uses separate service modules so each can be upgraded independently.
-
-## License
-
-MIT — use freely for education and agricultural extension projects.
+The Smart Farming Recommendation System was successfully tested and deployed. All major modules including crop recommendation, fertilizer suggestion, weather forecasting, Docker deployment, Jenkins CI/CD pipeline, and AWS EC2 hosting were verified successfully.
