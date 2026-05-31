@@ -31,7 +31,7 @@ export default function Home() {
           <h1 className="text-3xl md:text-4xl font-display mt-1">AgriSmart Farming Advisor</h1>
           <p className="text-field-100 mt-2 max-w-2xl text-lg">
             Data-driven crop, fertilizer, and water recommendations — reduce guesswork and farm
-            smarter.....
+            smarter......
           </p>
         </div>
       </header>
