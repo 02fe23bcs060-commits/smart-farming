@@ -102,6 +102,8 @@ def get_history(farmer_id: int, db: Session = Depends(get_db)):
 @router.get("/status")
 def backend_status():
     return {
-        "status": "Backend API running",
-        "updated_by": "Member 3"
+        "status": "Backend API running successfully",
+        "version": "1.1",
+        "updated_by": "Bhagyashree Bhovi",
+        "branch": "feature/backend-api"
     }
